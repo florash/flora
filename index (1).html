@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flora He — Digital Content Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F7F5F0;
+      --surface: #FFFFFF;
+      --ink: #1A1A1A;
+      --ink-soft: #4A4A4A;
+      --ink-muted: #767676; /* WCAG AA compliant on white */
+      --accent: #1D4ED8;   /* WCAG AAA on white */
+      --accent-light: #EFF6FF;
+      --accent-mid: #BFDBFE;
+      --success: #166534;  /* WCAG AA */
+      --tag-bg: #F1F5F9;
+      --border: #E2E8F0;
+      --border-strong: #CBD5E1;
+      --ratio: 4.5;        /* min contrast ratio label */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SKIP LINK (WCAG 2.4.1) ── */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 1rem;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 0 0 6px 6px;
+      font-weight: 500;
+      z-index: 9999;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247, 245, 240, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-weight: 400;
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--accent);
+      transition: width 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ── LAYOUT ── */
+    main { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+    section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+
+    /* ── HERO ── */
+    #hero {
+      padding: 7rem 0 5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+
+    h1 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 1.125rem;
+      color: var(--ink-soft);
+      max-width: 560px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      background: var(--tag-bg);
+      color: var(--ink-soft);
+      border: 1px solid var(--border-strong);
+    }
+
+    .tag.accent {
+      background: var(--accent-light);
+      color: var(--accent);
+      border-color: var(--accent-mid);
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 3px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.15s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: #1e40af; }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--border-strong);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── WCAG BADGE ── */
+    .wcag-strip {
+      background: var(--accent-light);
+      border: 1px solid var(--accent-mid);
+      border-radius: 4px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 3rem;
+      max-width: 520px;
+    }
+
+    .wcag-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: white;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .wcag-text {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    .wcag-text strong { color: var(--accent); }
+
+    /* ── SECTION HEADERS ── */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 2.5rem;
+      color: var(--ink);
+    }
+
+    h2 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--accent);
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .skill-block {
+      background: var(--surface);
+      padding: 1.5rem;
+    }
+
+    .skill-block h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .skill-list li {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .skill-list li::before {
+      content: '—';
+      color: var(--border-strong);
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    /* ── EXPERIENCE ── */
+    .exp-list { display: flex; flex-direction: column; gap: 0; }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .exp-item:last-child { border-bottom: none; }
+
+    .exp-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      padding-top: 0.2rem;
+      line-height: 1.6;
+    }
+
+    .exp-role {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+    }
+
+    .exp-org {
+      font-size: 0.875rem;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      font-weight: 400;
+    }
+
+    .exp-desc {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .exp-bullets li {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      padding-left: 1rem;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .exp-bullets li::before {
+      content: '↳';
+      position: absolute;
+      left: 0;
+      color: var(--accent-mid);
+      font-size: 0.75rem;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.75rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent-mid);
+      box-shadow: 0 4px 20px rgba(29, 78, 216, 0.06);
+    }
+
+    .project-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--ink-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .project-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .project-desc {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      color: var(--ink-muted);
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    /* ── EDUCATION ── */
+    .edu-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .edu-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .edu-degree {
+      font-weight: 500;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .edu-uni {
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+    }
+
+    .edu-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      white-space: nowrap;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      text-align: center;
+      padding: 5rem 0;
+    }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .contact-card h2 { margin-bottom: 0.75rem; }
+
+    .contact-card p {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0.875rem;
+      border: 1.5px solid var(--border);
+      border-radius: 3px;
+      text-decoration: none;
+      color: var(--ink-soft);
+      font-size: 0.875rem;
+      transition: all 0.15s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .contact-link:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .wcag-footer-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      border: 1px solid var(--accent-mid);
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      background: var(--accent-light);
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .fade-in.hidden {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; }
+      main { padding: 0 1rem; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .edu-item { flex-direction: column; }
+      h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav aria-label="Main navigation">
+    <a href="#hero" class="nav-logo" aria-label="Flora He - Home">FH_</a>
+    <ul class="nav-links" role="list">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section id="hero" aria-labelledby="hero-heading">
+      <p class="hero-label" aria-hidden="true">Digital Content Creator</p>
+      <h1 id="hero-heading">Flora He —<br><em>Web Content</em><br>Professional</h1>
+      <p class="hero-desc">
+        Digital content professional with experience in web content publishing, CMS management, SEO and accessibility-focused design. Based in Canberra, AU.
+      </p>
+      <div class="hero-tags" role="list" aria-label="Core skills">
+        <span class="tag accent" role="listitem">CMS / WordPress</span>
+        <span class="tag accent" role="listitem">WCAG Accessibility</span>
+        <span class="tag accent" role="listitem">Google Analytics</span>
+        <span class="tag" role="listitem">SEO</span>
+        <span class="tag" role="listitem">HTML / CSS</span>
+        <span class="tag" role="listitem">SharePoint</span>
+        <span class="tag" role="listitem">Adobe Creative Suite</span>
+        <span class="tag" role="listitem">Canva</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+        <a href="resume.pdf" class="btn btn-outline" download>Download CV</a>
+      </div>
+
+      <div class="wcag-strip" role="note" aria-label="Accessibility commitment">
+        <div class="wcag-icon" aria-hidden="true">AA</div>
+        <p class="wcag-text">
+          This site is built to <strong>WCAG 2.1 AA</strong> standards — high contrast ratios, semantic HTML, keyboard navigation, and proper alt text throughout.
+        </p>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" aria-labelledby="skills-heading">
+      <p class="section-label" aria-hidden="true">// 01</p>
+      <h2 id="skills-heading">Key <em>Skills</em></h2>
+      <div class="skills-grid" role="list">
+        <div class="skill-block fade-in" role="listitem">
+          <h3>Web &amp; Digital</h3>
+          <ul class="skill-list" aria-label="Web and digital skills">
+            <li>Web content editing &amp; publishing</li>
+            <li>WordPress CMS</li>
+            <li>HTML / CSS</li>
+            <li>SharePoint (intranet)</li>
+            <li>Digital asset management</li>
+          </ul>
+        </div>
+        <div class="skill-block fade-in" role="listitem">
+          <h3>Accessibility &amp; Standards</h3>
+          <ul class="skill-list" aria-label="Accessibility skills">
+            <li>WCAG 2.1 AA principles</li>
+            <li>Image alt text &amp; descriptions</li>
+            <li>Colour contrast compliance</li>
+            <li>Structured headings (H1/H2/H3)</li>
+            <li>Keyboard navigation awareness</li>
+          </ul>
+        </div>
+        <div class="skill-block fade-in" role="listitem">
+          <h3>Analytics &amp; SEO</h3>
+          <ul class="skill-list" aria-label="Analytics and SEO skills">
+            <li>Google Analytics</li>
+            <li>SEO fundamentals</li>
+            <li>Keyword research</li>
+            <li>Page title &amp; heading optimisation</li>
+            <li>Engagement data analysis</li>
+          </ul>
+        </div>
+        <div class="skill-block fade-in" role="listitem">
+          <h3>Content &amp; Tools</h3>
+          <ul class="skill-list" aria-label="Content and tools skills">
+            <li>Content writing &amp; editing</li>
+            <li>Adobe Creative Suite</li>
+            <li>Canva</li>
+            <li>AI-assisted content tools</li>
+            <li>Microsoft Office Suite</li>
+          </ul>
+        </div>
+        <div class="skill-block fade-in" role="listitem">
+          <h3>Professional</h3>
+          <ul class="skill-list" aria-label="Professional skills">
+            <li>Stakeholder liaison</li>
+            <li>User guides &amp; documentation</li>
+            <li>Quality assurance</li>
+            <li>Project coordination</li>
+            <li>Collaborative teamwork</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" aria-labelledby="experience-heading">
+      <p class="section-label" aria-hidden="true">// 02</p>
+      <h2 id="experience-heading">Professional <em>Experience</em></h2>
+      <div class="exp-list">
+
+        <article class="exp-item fade-in">
+          <div class="exp-period">
+            <time datetime="2023">2023</time> —<br>Present
+          </div>
+          <div>
+            <p class="exp-role">Digital Content Creator</p>
+            <p class="exp-org">Self-Employed</p>
+            <p class="exp-desc">Managed digital content and information publishing across a website and blog platform with 5,000+ followers.</p>
+            <ul class="exp-bullets" aria-label="Key responsibilities">
+              <li>Created and maintained website content, ensuring information was clear, accurate and accessible for online users.</li>
+              <li>Applied SEO practices including keyword research and optimisation of page titles and headings to improve discoverability.</li>
+              <li>Ensured content followed WCAG accessibility principles — alt text, colour contrast, and structured headings.</li>
+              <li>Analysed Google Analytics data to identify high-performing content and inform publishing approach.</li>
+              <li>Maintained ongoing content updates to ensure information remained current and relevant.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="exp-item fade-in">
+          <div class="exp-period">
+            <time datetime="2021">2021</time> —<br><time datetime="2023">2023</time>
+          </div>
+          <div>
+            <p class="exp-role">Web Developer – Project Support</p>
+            <p class="exp-org">K2L, Canberra</p>
+            <p class="exp-desc">Supported website updates, digital systems and documentation within a project delivery environment.</p>
+            <ul class="exp-bullets" aria-label="Key responsibilities">
+              <li>Assisted with website and digital platform updates, ensuring content accuracy and consistent formatting.</li>
+              <li>Applied HTML and CSS to implement content updates and maintain webpage presentation standards.</li>
+              <li>Used SharePoint to organise and maintain documentation and information resources for internal teams.</li>
+              <li>Developed user guides and procedural documentation to support staff capability.</li>
+              <li>Responded to stakeholder enquiries and provided guidance on processes and information resources.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="exp-item fade-in">
+          <div class="exp-period"><time datetime="2021">2021</time></div>
+          <div>
+            <p class="exp-role">Project Support Officer</p>
+            <p class="exp-org">ACS Program</p>
+            <ul class="exp-bullets" aria-label="Key responsibilities">
+              <li>Coordinated project documentation and maintained records aligned with reporting requirements.</li>
+              <li>Prepared user manuals and training documentation to support system adoption.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="exp-item fade-in">
+          <div class="exp-period"><time datetime="2018">2018</time></div>
+          <div>
+            <p class="exp-role">Graduate Project Support</p>
+            <p class="exp-org">Macquarie University &amp; Suncorp</p>
+            <ul class="exp-bullets" aria-label="Key responsibilities">
+              <li>Provided documentation and usability testing support within a university–industry digital project.</li>
+              <li>Assisted with reporting and testing activities to support digital system improvements.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" aria-labelledby="projects-heading">
+      <p class="section-label" aria-hidden="true">// 03</p>
+      <h2 id="projects-heading">Projects &amp; <em>Highlights</em></h2>
+      <div class="projects-grid">
+
+        <article class="project-card fade-in">
+          <p class="project-num">// 01</p>
+          <h3 class="project-title">Digital Content Platform</h3>
+          <p class="project-desc">Independently managed a website and blog focused on digital content, growing an engaged audience through consistent publishing, SEO and accessibility-conscious design.</p>
+          <div class="project-stats" aria-label="Project metrics">
+            <div class="stat">
+              <p class="stat-num">5K+</p>
+              <p class="stat-label">Followers</p>
+            </div>
+            <div class="stat">
+              <p class="stat-num">30K+</p>
+              <p class="stat-label">Likes</p>
+            </div>
+          </div>
+          <div class="project-tags" aria-label="Technologies used">
+            <span class="tag">CMS</span>
+            <span class="tag">SEO</span>
+            <span class="tag">Google Analytics</span>
+            <span class="tag">WCAG</span>
+          </div>
+        </article>
+
+        <article class="project-card fade-in">
+          <p class="project-num">// 02</p>
+          <h3 class="project-title">Personal Portfolio Website</h3>
+          <p class="project-desc">Designed and built a personal portfolio website from scratch using HTML and CSS, applying WCAG accessibility principles including semantic structure, contrast ratios and keyboard navigation.</p>
+          <div class="project-tags" aria-label="Technologies used">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">WCAG AA</span>
+            <span class="tag">Semantic HTML</span>
+          </div>
+        </article>
+
+        <article class="project-card fade-in">
+          <p class="project-num">// 03</p>
+          <h3 class="project-title">Travel Planning Application</h3>
+          <p class="project-desc">University–industry collaboration with Suncorp. Contributed to usability testing, documentation and stakeholder communication throughout the project lifecycle.</p>
+          <div class="project-tags" aria-label="Technologies used">
+            <span class="tag">Usability Testing</span>
+            <span class="tag">Documentation</span>
+            <span class="tag">Stakeholder Comms</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" aria-labelledby="education-heading">
+      <p class="section-label" aria-hidden="true">// 04</p>
+      <h2 id="education-heading"><em>Education</em></h2>
+      <div class="edu-list">
+        <div class="edu-item fade-in">
+          <div>
+            <p class="edu-degree">Master of Engineering Management</p>
+            <p class="edu-uni">University of Technology Sydney</p>
+          </div>
+          <p class="edu-year"><time datetime="2019">2019</time> – <time datetime="2020">2020</time></p>
+        </div>
+        <div class="edu-item fade-in">
+          <div>
+            <p class="edu-degree">Bachelor of Information Technology</p>
+            <p class="edu-uni">Macquarie University</p>
+          </div>
+          <p class="edu-year"><time datetime="2016">2016</time> – <time datetime="2019">2019</time></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-labelledby="contact-heading">
+      <div class="contact-card">
+        <p class="section-label" aria-hidden="true">// 05</p>
+        <h2 id="contact-heading">Get in <em>Touch</em></h2>
+        <p>Open to Web Content and Digital Communications roles in Canberra. Feel free to reach out.</p>
+        <div class="contact-links">
+          <a href="mailto:flora.shuohe@gmail.com" class="contact-link" aria-label="Send email">
+            <span aria-hidden="true">✉</span> flora.shuohe@gmail.com
+          </a>
+          <a href="resume.pdf" class="contact-link" download aria-label="Download CV as PDF">
+            <span aria-hidden="true">↓</span> Download CV
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 Flora He</p>
+    <span class="wcag-footer-badge" role="note" aria-label="WCAG 2.1 AA compliant">WCAG 2.1 AA</span>
+  </footer>
+
+  <script>
+    // Intersection Observer for fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.clas
